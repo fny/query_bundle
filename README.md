@@ -26,7 +26,6 @@ bundle.green_bananas # => [Banana<0x3>, Banana<0x4>]
  - MySQL support
  - Aggregate queries for records of the same model type
  - SQL/Arel support
- - Query logging
  - Concurrency testing
  - Determine namespace within ActiveRecord
  - Extract records from bundle by class

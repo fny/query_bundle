@@ -25,12 +25,16 @@ class QueryBundle
 
   def execute
     @executed = true
-    conn.get_last_result
-    conn.send_query(relations_sql)
-    conn.block
+    sql = relations_sql
     pg_results = []
-    while pg_result = conn.get_result
-      pg_results << pg_result
+
+    log(sql) do
+      conn.get_last_result
+      conn.send_query(sql)
+      conn.block
+      while pg_result = conn.get_result
+        pg_results << pg_result
+      end
     end
 
     mappings.each_with_index do |label_mapping, i|
@@ -39,6 +43,7 @@ class QueryBundle
       model = mappings[label][:model]
       mappings[label][:results] = convert_to_records(pg_result, model)
     end
+    true
   end
 
   def executed?
@@ -64,6 +69,8 @@ class QueryBundle
     ActiveRecord::Base.connection.raw_connection
   end
 
+  def log(*args, &block)
+    ActiveRecord::Base.connection.send(:log, *args, &block)
   end
 
   def convert_to_records(pg_result, model)
