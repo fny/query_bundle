@@ -6,11 +6,6 @@ class QueryBundle
 
   NotExecutedError = Class.new(StandardError)
 
-  def self.connection
-    @connection ||=
-      ActiveRecord::Base.connection.instance_variable_get(:@connection)
-  end
-
   def self.fetch(mappings = {})
     bundle = new(mappings)
     bundle.execute
@@ -66,7 +61,9 @@ class QueryBundle
   end
 
   def conn
-    QueryBundle.connection
+    ActiveRecord::Base.connection.raw_connection
+  end
+
   end
 
   def convert_to_records(pg_result, model)
