@@ -5,10 +5,16 @@ class QueryBundle
   attr_reader :mappings
 
   NotExecutedError = Class.new(StandardError)
+  UnsupportedDatabaseError = Class.new(StandardError)
 
-  def self.connection
-    @connection ||=
-      ActiveRecord::Base.connection.instance_variable_get(:@connection)
+  def adapter
+    @adapter ||=
+      case adapter_name = ActiveRecord::Base.connection.adapter_name
+      when "Postgres"
+        PostgreSQLAdapter.new
+      else
+        raise UnsupportedDatabaseError, "#{adapter_name} is not supported"
+      end
   end
 
   def self.fetch(mappings = {})
@@ -72,7 +78,7 @@ class QueryBundle
   def convert_to_records(pg_result, model)
     fields = pg_result.fields
     pg_result.values.map { |value_set|
-      model.new(Hash[fields.zip(value_set)])
+      model.instantiate(Hash[fields.zip(value_set)])
     }
   end
 

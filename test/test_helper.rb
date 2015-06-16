@@ -8,8 +8,9 @@ require 'query_bundle'
 require 'yaml'
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'pry'
 
-`psql -c 'create database query_bundle_test;' -U postgres`
+`psql -c 'drop database query_bundle_test if exists; create database query_bundle_test;' -U postgres`
 db_config = File.expand_path('../support/database.yml', __FILE__)
 
 ActiveRecord::Base.configurations = YAML.load_file(db_config)

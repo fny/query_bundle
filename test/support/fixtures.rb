@@ -1,3 +1,5 @@
+apple_tree = Tree.find_or_create_by(name: 'Apple')
+
 apples = [
   # Old Apples
   { name: 'Curie', age: 100 },
@@ -12,6 +14,8 @@ apples = [
   { name: 'Rachel', age: 10 },
   { name: 'Abby', age: 10 }
 ]
+
+banana_tree = Tree.find_or_create_by(name: 'Banana')
 
 bananas = [
   # Old Bananas
@@ -31,11 +35,13 @@ bananas = [
 apples.each do |apple|
   Apple.find_or_create_by(name: apple[:name]) do |a|
     a.age = apple[:age]
+    a.tree = apple_tree
   end
 end
 
 bananas.each do |banana|
   Banana.find_or_create_by(name: banana[:name]) do |b|
     b.age = banana[:age]
+    a.tree = banana_tree
   end
 end

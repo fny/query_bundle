@@ -25,11 +25,11 @@ class QueryBundleTest < Minitest::Test
       old_bananas: old_bananas_relation,
       young_bananas: young_bananas_relation
     )
+    assert bundle.old_bananas.first.persisted?
     run_data_assertions(bundle)
   end
 
   private
-
 
   def run_data_assertions(bundle)
     assert bundle.young_apples.size > 0
