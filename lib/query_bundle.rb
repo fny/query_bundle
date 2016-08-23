@@ -76,11 +76,28 @@ class QueryBundle
   def convert_to_records(pg_result, model)
     fields = pg_result.fields
     pg_result.values.map { |value_set|
-      model.new(Hash[fields.zip(value_set)])
+      model.new(model_params(fields, value_set))
     }
   end
 
   def relations_sql
     mappings.map { |label, mapping| mapping[:sql] }.join(';')
+  end
+
+  def model_params(fields, values)
+    adjust_timestamps(Hash[fields.zip(values)])
+  end
+
+  # Timestamps are not converted properly from UTC if active record's
+  # default_time_zone is set to :local
+  def adjust_timestamps(params)
+    timestamp_columns.each do |col|
+      params[col] += ' UTC' if params.has_key?(col)
+    end
+    params
+  end
+
+  def timestamp_columns
+    ['created_at', 'updated_at']
   end
 end
