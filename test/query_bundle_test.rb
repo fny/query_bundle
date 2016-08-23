@@ -32,8 +32,8 @@ class QueryBundleTest < Minitest::Test
     Time.zone = 'America/Chicago'
     ActiveRecord::Base.default_timezone = :local
     bundle = QueryBundle.fetch(watermelons: watermelons_relation)
-    assert_equal Time.zone.now.to_s, bundle.watermelons.first.created_at.to_s
-    assert_equal Time.zone.now.to_s, bundle.watermelons.first.updated_at.to_s
+    assert_equal Time.zone.now.utc.to_s, bundle.watermelons.first.created_at.utc.to_s
+    assert_equal Time.zone.now.utc.to_s, bundle.watermelons.first.updated_at.utc.to_s
   end
 
   private
