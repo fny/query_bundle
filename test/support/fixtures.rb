@@ -10,7 +10,7 @@ apples = [
   { name: 'Sally', age: 10 },
   { name: 'Sherry', age: 10 },
   { name: 'Rachel', age: 10 },
-  { name: 'Abby', age: 10 }
+  { name: 'Abby', age: 10 },
 ]
 
 bananas = [
@@ -28,6 +28,10 @@ bananas = [
   { name: 'John', age: 10 }
 ]
 
+watermelons = [
+  { name: 'Billy', age: 999 }
+]
+
 apples.each do |apple|
   Apple.find_or_create_by(name: apple[:name]) do |a|
     a.age = apple[:age]
@@ -37,5 +41,11 @@ end
 bananas.each do |banana|
   Banana.find_or_create_by(name: banana[:name]) do |b|
     b.age = banana[:age]
+  end
+end
+
+watermelons.each do |watermelon|
+  Watermelon.find_or_create_by(name: watermelon[:name]) do |w|
+    w.age = watermelon[:age]
   end
 end

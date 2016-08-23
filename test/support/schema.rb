@@ -10,4 +10,10 @@ ActiveRecord::Schema.define do
     t.string  :name, unique: true
     t.integer :age
   end
+
+  create_table :watermelons, force: true do |t|
+    t.string  :name, unique: true
+    t.integer :age
+    t.timestamps
+  end
 end
